@@ -3,7 +3,6 @@ package tasks;
 import common.Person;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 /*
 Задача 3
@@ -12,8 +11,9 @@ import java.util.stream.Collectors;
 public class Task3 {
 
   public static List<Person> sort(Collection<Person> persons) {
-    return persons.stream().sorted(
-            Comparator
+    return persons.stream()
+            .filter(Objects::nonNull)
+            .sorted(Comparator
                     .comparing(Person::getSecondName)
                     .thenComparing(Person::getFirstName)
                     .thenComparing(Person::getCreatedAt))

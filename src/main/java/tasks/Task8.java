@@ -41,24 +41,24 @@ public class Task8 {
 
   // словарь id персоны -> ее имя
   public Map<Integer, String> getPersonNames(Collection<Person> persons) {
-    return persons.stream().distinct()
-            .filter(person -> Objects.nonNull(person.getId()))
-            .collect(Collectors.toMap(Person::getId, this::convertPersonToString));
+    Map<Integer, String> map = new HashMap<>(1);
+    persons.stream()
+            .filter(Objects::nonNull)
+            .forEach(person -> map.putIfAbsent(person.getId(), convertPersonToString(person)));
+    return map;
   }
 
   // есть ли совпадающие в двух коллекциях персоны?
   public boolean hasSamePersons(Collection<Person> persons1, Collection<Person> persons2) {
-    return persons1.stream().filter(Objects::nonNull)
-            .anyMatch(
-                    person1
-                            -> persons2.stream().anyMatch(person1::equals)
-            );
+    Set<Person> unitedSet = new HashSet<>(persons1);
+    unitedSet.addAll(persons2);
+    return unitedSet.size() < persons1.size() + persons2.size();
   }
 
   //...
   public long countEven(Stream<Integer> numbers) {
     return numbers.filter(Objects::nonNull)
-            .filter(number -> Integer.lowestOneBit(number) == 0)
+            .filter(number -> number % 2 == 0)
             .count();
   }
 }

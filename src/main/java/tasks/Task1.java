@@ -24,8 +24,6 @@ public class Task1 {
   public List<Person> findOrderedPersons(List<Integer> personIds) {
     Map<Integer, Person> persons = personService.findPersons(personIds)
             .stream().collect(Collectors.toMap(Person::getId, person -> person));
-    return persons.entrySet().stream()
-            .sorted(Comparator.comparingInt(entry -> personIds.indexOf(entry.getKey())))
-            .map(Map.Entry::getValue).toList();
+    return personIds.stream().map(persons::get).collect(Collectors.toList());
   }
 }
